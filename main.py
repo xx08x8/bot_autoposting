@@ -21,7 +21,14 @@ async def main():
     dp.include_router(admin.router)
 
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    try:
+        logging.info("Starting bot...")
+        await dp.start_polling(bot)
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+    finally:
+        logging.info("Bot stopped.")
+        await bot.session.close()
 
 
 if __name__ == "__main__":
